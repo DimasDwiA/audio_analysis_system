@@ -1,0 +1,113 @@
+{
+  "report_id": "3466d107-6aa5-46c4-8308-ba9f6ff5c3cc",
+  "generated_at": "2026-05-11T06:34:29.769729Z",
+  "file_name": "audio_0.wav",
+  "file_path": "C:\\Users\\Dimas Dwi Armaisya\\Downloads\\audio_0.wav",
+  "duration_seconds": 4.464,
+  "duration_hms": "00:00:04",
+  "file_size_human": "418.0 KB",
+  "format": "WAV / WAVE (Waveform Audio)",
+  "audio_quality": {
+    "silence_ratio": 0.0,
+    "total_silence_seconds": 0,
+    "silence_segment_count": 0,
+    "clipping_detected": false,
+    "avg_volume_db": -17.7,
+    "peak_volume_db": -1.5,
+    "noise_floor_db": null,
+    "dynamic_range_db": 94.838782,
+    "rms_level_db": -17.658129,
+    "dc_offset": -0.000201,
+    "sample_rate_hz": 48000,
+    "channels": 1,
+    "channel_layout": "unknown",
+    "codec": "pcm_s16le",
+    "bitrate_kbps": 768.1,
+    "quality_score": 100,
+    "quality_grade": "A"
+  },
+  "silence_segments": [],
+  "issues": [],
+  "rules_analysis": {
+    "quality_score": 100,
+    "quality_grade": "A",
+    "summary_flags": [],
+    "detailed_issues": []
+  },
+  "raw_metrics": {
+    "metadata": {
+      "file_name": "audio_0.wav",
+      "file_path": "C:\\Users\\Dimas Dwi Armaisya\\Downloads\\audio_0.wav",
+      "file_size_bytes": 428588,
+      "file_size_human": "418.0 KB",
+      "format_name": "WAV / WAVE (Waveform Audio)",
+      "format_tags": {},
+      "duration_seconds": 4.464,
+      "duration_hms": "00:00:04",
+      "overall_bitrate_bps": 768078,
+      "overall_bitrate_kbps": 768.1,
+      "codec_name": "pcm_s16le",
+      "codec_long_name": "PCM signed 16-bit little-endian",
+      "sample_rate_hz": 48000,
+      "channels": 1,
+      "channel_layout": "unknown",
+      "bit_depth": 16,
+      "stream_bitrate_bps": 768000
+    },
+    "silence_analysis": {
+      "threshold_db": -30.0,
+      "min_duration_s": 2.0,
+      "segments": [],
+      "total_silence_seconds": 0,
+      "segment_count": 0
+    },
+    "volume_analysis": {
+      "mean_volume_db": -17.7,
+      "max_volume_db": -1.5,
+      "histogram_db": [
+        {
+          "db": -1,
+          "count": 8
+        },
+        {
+          "db": -2,
+          "count": 17
+        },
+        {
+          "db": -3,
+          "count": 236
+        }
+      ],
+      "is_too_quiet": false,
+      "low_volume_threshold_db": -40.0
+    },
+    "clipping_analysis": {
+      "clipping_detected": false,
+      "peak_level_db": null,
+      "rms_level_db": null,
+      "peak_count": 2560,
+      "max_difference": 0.0,
+      "clipping_threshold_db": -0.1
+    },
+    "audio_statistics": {
+      "rms_level_db": -17.658129,
+      "rms_peak_db": -9.190965,
+      "rms_trough_db": -53.351974,
+      "crest_factor_db": 6.432486,
+      "flat_factor": 0.0,
+      "dc_offset": -0.000201,
+      "noise_floor_db": null,
+      "dynamic_range_db": 94.838782,
+      "is_noisy": false,
+      "noise_floor_threshold_db": -50.0
+    }
+  },
+  "llm_insights": {
+    "executive_summary": "The audio file is in excellent condition, meeting professional standards for clarity and technical integrity. It features a healthy peak level of -1.5 dB, providing sufficient headroom without any detected clipping or digital distortion. The recording exhibits a high dynamic range of 94.8 dB, indicating a clean signal path with no significant noise or silence issues.",
+    "recommended_actions": [
+      "No immediate technical corrections are required as the file passed all quality checks.",
+      "Proceed with standard production workflows, such as normalization or final mastering, if specific loudness targets (e.g., LUFS) are required for your delivery platform."
+    ],
+    "overall_verdict": "The audio is of high quality and ready for immediate use."
+  }
+}

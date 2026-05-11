@@ -1,0 +1,125 @@
+{
+  "report_id": "8d328bb6-ecf3-420e-8058-b53071f2ea75",
+  "generated_at": "2026-05-11T02:13:53.091198Z",
+  "file_name": "tmp8y7m49bn_demo.wav",
+  "file_path": "C:\\Users\\Dimas Dwi Armaisya\\AppData\\Local\\Temp\\tmp8y7m49bn_demo.wav",
+  "duration_seconds": 12.0,
+  "duration_hms": "00:00:12",
+  "file_size_human": "1.0 MB",
+  "format": "WAV / WAVE (Waveform Audio)",
+  "audio_quality": {
+    "silence_ratio": 0.3333,
+    "total_silence_seconds": 4.0,
+    "silence_segment_count": 1,
+    "clipping_detected": false,
+    "avg_volume_db": -11.7,
+    "peak_volume_db": -6.9,
+    "noise_floor_db": null,
+    "dynamic_range_db": 62.94911,
+    "rms_level_db": -11.707332,
+    "dc_offset": 0.0,
+    "sample_rate_hz": 44100,
+    "channels": 1,
+    "channel_layout": "unknown",
+    "codec": "pcm_s16le",
+    "bitrate_kbps": 705.6,
+    "quality_score": 90,
+    "quality_grade": "A"
+  },
+  "silence_segments": [
+    {
+      "start_s": 3.0,
+      "end_s": 7.0,
+      "duration_s": 4.0
+    }
+  ],
+  "issues": [
+    "High silence ratio: 33.3% of total audio is silent (4.0s / 12.0s)"
+  ],
+  "rules_analysis": {
+    "quality_score": 90,
+    "quality_grade": "A",
+    "summary_flags": [
+      "HIGH_SILENCE_RATIO"
+    ],
+    "detailed_issues": [
+      {
+        "severity": "warning",
+        "category": "silence",
+        "message": "High silence ratio: 33.3% of total audio is silent (4.0s / 12.0s)",
+        "detail": {
+          "silence_ratio": 0.3333,
+          "total_silence_s": 4.0,
+          "duration_s": 12.0
+        }
+      }
+    ]
+  },
+  "raw_metrics": {
+    "metadata": {
+      "file_name": "tmp8y7m49bn_demo.wav",
+      "file_path": "C:\\Users\\Dimas Dwi Armaisya\\AppData\\Local\\Temp\\tmp8y7m49bn_demo.wav",
+      "file_size_bytes": 1058444,
+      "file_size_human": "1.0 MB",
+      "format_name": "WAV / WAVE (Waveform Audio)",
+      "format_tags": {},
+      "duration_seconds": 12.0,
+      "duration_hms": "00:00:12",
+      "overall_bitrate_bps": 705629,
+      "overall_bitrate_kbps": 705.6,
+      "codec_name": "pcm_s16le",
+      "codec_long_name": "PCM signed 16-bit little-endian",
+      "sample_rate_hz": 44100,
+      "channels": 1,
+      "channel_layout": "unknown",
+      "bit_depth": 16,
+      "stream_bitrate_bps": 705600
+    },
+    "silence_analysis": {
+      "threshold_db": -30,
+      "min_duration_s": 0.5,
+      "segments": [
+        {
+          "start_s": 3.0,
+          "end_s": 7.0,
+          "duration_s": 4.0
+        }
+      ],
+      "total_silence_seconds": 4.0,
+      "segment_count": 1
+    },
+    "volume_analysis": {
+      "mean_volume_db": -11.7,
+      "max_volume_db": -6.9,
+      "histogram_db": [
+        {
+          "db": -6,
+          "count": 27200
+        }
+      ],
+      "is_too_quiet": false,
+      "low_volume_threshold_db": -40.0
+    },
+    "clipping_analysis": {
+      "clipping_detected": false,
+      "peak_level_db": -6.935838,
+      "rms_level_db": -9.984869,
+      "peak_count": 5,
+      "max_difference": 924.0,
+      "clipping_threshold_db": -0.1
+    },
+    "audio_statistics": {
+      "rms_level_db": -11.707332,
+      "rms_peak_db": -9.930726,
+      "rms_trough_db": -357.383046,
+      "crest_factor_db": 1.732107,
+      "flat_factor": 0.0,
+      "dc_offset": 0.0,
+      "noise_floor_db": null,
+      "dynamic_range_db": 62.94911,
+      "is_noisy": false,
+      "noise_floor_threshold_db": -50.0
+    }
+  },
+  "llm_insights": {}
+}
