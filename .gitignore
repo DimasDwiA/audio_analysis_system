@@ -32,6 +32,3 @@ ENV/
 
 # Logs
 *.log
-
-# Output files (optional - remove if you want to track reports)
-output/*.json
