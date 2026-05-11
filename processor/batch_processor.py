@@ -14,57 +14,54 @@ Features
 """
 
 from __future__ import annotations
-
+ 
 import json
 import time
 from pathlib import Path
 from typing import Any
-
+ 
 from agent.audio_agent import AudioAnalysisAgent
-from llm.gemini_client import GeminiClient
 from llm.prompts import BATCH_SUMMARY_PROMPT, INSIGHT_SYSTEM_PROMPT
 from utils.helpers import sanitize_filename, utc_now_iso
 from utils.logger import get_logger
-
+ 
 logger = get_logger(__name__)
-
-
+ 
+ 
 class BatchProcessor:
     """
     Analyse multiple audio files and produce a consolidated batch report.
-
+ 
     Parameters
     ----------
     output_dir : Directory where per-file and batch reports are written.
     save_json  : If True, write each individual report as a JSON file.
     """
-
-    def __init__(
-        self,
-        output_dir: Path | None = None,
-        save_json: bool = True,
-    ) -> None:
+ 
+    def __init__(self, output_dir: Path | None = None, save_json: bool = True,) -> None:
         from config import settings  # local to avoid circular import
         self.output_dir = output_dir or settings.OUTPUT_DIR
         self.output_dir.mkdir(parents=True, exist_ok=True)
         self.save_json = save_json
         self._agent = AudioAnalysisAgent()
-        self._llm = GeminiClient()
-
+        # FIX: do NOT initialise GeminiClient here.
+        # It raises EnvironmentError when GEMINI_API_KEY is absent, which
+        # would crash batch mode even when the LLM summary is not needed.
+        # The client is created lazily inside _generate_batch_summary().
+        self._llm = None
+ 
     # Public API
-    def process_files(
-        self,
-        file_paths: list[str | Path],
-        generate_batch_summary: bool = True,
-    ) -> dict[str, Any]:
+    def process_files(self, file_paths: list[str | Path], 
+                      generate_batch_summary: bool = True,) -> dict[str, Any]:
         """
         Analyse each file in *file_paths* and return the combined batch report.
-
+ 
         Parameters
         ----------
         file_paths             : List of paths to audio files.
-        generate_batch_summary : Call the LLM for a cross-file summary.
-
+        generate_batch_summary : Call the LLM for a cross-file summary
+                                 (silently skipped if no API key is set).
+ 
         Returns
         -------
         Batch report dict with keys:
@@ -75,20 +72,20 @@ class BatchProcessor:
         logger.info("━" * 60)
         logger.info("Batch '%s': %d file(s) queued.", batch_id, len(file_paths))
         logger.info("━" * 60)
-
+ 
         results: list[dict[str, Any]] = []
         errors: list[dict[str, Any]] = []
-
+ 
         for idx, fp in enumerate(file_paths, start=1):
             path = Path(fp)
             logger.info("[%d/%d] Processing: %s", idx, len(file_paths), path.name)
-
+ 
             try:
                 report = self._agent.analyze(path)
-
+ 
                 if self.save_json:
                     self._save_report(report, path.stem)
-
+ 
                 results.append(report)
                 logger.info(
                     "  ✓ Done – score=%s, grade=%s, issues=%d",
@@ -96,22 +93,22 @@ class BatchProcessor:
                     report.get("audio_quality", {}).get("quality_grade", "?"),
                     len(report.get("issues", [])),
                 )
-
+ 
             except Exception as exc:
                 logger.error("  ✗ Failed: %s – %s", path.name, exc)
                 errors.append({"file": str(path), "error": str(exc)})
-
-        # Batch summary
+ 
+        # Batch summary (LLM) – skipped gracefully if no API key
         batch_summary: dict[str, Any] = {}
         if generate_batch_summary and results:
             batch_summary = self._generate_batch_summary(results)
-
+ 
         # Aggregate statistics
         scores = [
             r.get("audio_quality", {}).get("quality_score", 0)
             for r in results
         ]
-
+ 
         batch_report: dict[str, Any] = {
             "batch_id": batch_id,
             "generated_at": utc_now_iso(),
@@ -125,17 +122,17 @@ class BatchProcessor:
             "individual_reports": results,
             "batch_summary": batch_summary,
         }
-
+ 
         if self.save_json:
             self._save_report(batch_report, batch_id)
-
+ 
         logger.info(
             "Batch complete – %d/%d succeeded, avg_score=%.1f",
             len(results), len(file_paths),
             batch_report["avg_quality_score"],
         )
         return batch_report
-    
+ 
     # Private helpers
     def _save_report(self, report: dict[str, Any], stem: str) -> Path:
         """Write *report* to a JSON file in output_dir."""
@@ -145,13 +142,28 @@ class BatchProcessor:
             json.dump(report, f, indent=2, ensure_ascii=False)
         logger.debug("Report saved: %s", out_path)
         return out_path
-
-    def _generate_batch_summary(
-        self, reports: list[dict[str, Any]]
-    ) -> dict[str, Any]:
-        """Call Gemini to summarise the batch results."""
+ 
+    def _generate_batch_summary(self, reports: list[dict[str, Any]]) -> dict[str, Any]:
+        """
+        Call Gemini to summarise the batch results.
+ 
+        FIX: GeminiClient is initialised here (lazily) rather than in
+        __init__, so a missing API key only affects this optional step
+        instead of crashing the entire BatchProcessor constructor.
+        """
+        # Lazy initialisation
+        if self._llm is None:
+            try:
+                from llm.gemini_client import GeminiClient
+                self._llm = GeminiClient()
+            except EnvironmentError:
+                logger.warning(
+                    "GEMINI_API_KEY not set – skipping batch LLM summary."
+                )
+                return {"note": "LLM summary skipped: GEMINI_API_KEY not configured."}
+ 
         logger.info("Generating batch summary via LLM…")
-
+ 
         summaries = []
         for r in reports:
             aq = r.get("audio_quality", {})
@@ -163,12 +175,12 @@ class BatchProcessor:
                 f"clipping={aq.get('clipping_detected', False)}, "
                 f"silence_ratio={aq.get('silence_ratio', 0):.2%}"
             )
-
+ 
         prompt = BATCH_SUMMARY_PROMPT.format(
             file_count=len(reports),
             individual_summaries="\n".join(summaries),
         )
-
+ 
         try:
             raw = self._llm.complete(prompt, system_instruction=INSIGHT_SYSTEM_PROMPT)
             cleaned = raw.strip()
