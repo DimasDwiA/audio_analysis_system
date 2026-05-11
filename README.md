@@ -238,7 +238,7 @@ The output will include:
 
 ### Mode 4 – Full Agentic Loop (Gemini leads everything)
 
-In this mode, Gemini decides on its own which tools to call, in what order, and when to stop—just like a real AI agent:
+In this mode, Gemini decides on its own which tools to call, in what order, and when to stop:
 
 ```bash
 # Requires GEMINI_API_KEY
